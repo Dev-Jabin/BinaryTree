@@ -66,16 +66,21 @@ class BinaryTree
 	 */
 	public function preOrder1($node)
 	{
+		if (is_null($node)) {
+			return;
+		}
 		$stack = array();
-		array_push($stack, $node);
-		while (!empty($stack)) {
-			$node = array_pop($stack);
-			echo $node->data."**";
-			if ($node->rChild != null) {
-				array_push($stack, $node->rChild);
+		while (!empty($stack) || !is_null($node)) {
+			//遍历打印同时，将节点入栈，后续会使用这个节点进入右子树
+			while (!is_null($node)) {
+				echo $node->data."**";
+				array_push($stack, $node);
+				$node = $node->lChild;
 			}
-			if ($node->lChild != null) {
-				array_push($stack, $node->lChild);
+			//当node为空时，说明根和左子树遍历完成，进入右子树
+			if (!empty($stack)) {
+				$node = array_pop($stack);
+				$node = $node->rChild;
 			}
 		}
 	}
@@ -94,6 +99,30 @@ class BinaryTree
 		$this->inOrder($node->rChild);
 	}
 
+	/**
+	 * 中序遍历，非递归方式
+	 */
+	public function inOrder1($node)
+	{
+		if (is_null($node)) {
+			return;
+		}
+		$stack = array();
+		while (!empty($stack) || !is_null($node)) {
+			// 一直遍历到左子树最下边，遍历的同时将根节点保存到栈中
+			while (!is_null($node)) {
+				array_push($stack, $node);
+				$node = $node->lChild;
+			}
+			// 当node为空时，说明已经到达左子树最下边，执行出栈
+			if (!empty($stack)) {
+				$node = array_pop($stack);
+				echo $node->data."**";
+				// 左子树和数据节点遍历完毕，进入右子树，开始新一轮左子树遍历
+				$node=$node->rChild;
+			}
+		}
+	}
 
 	/**
 	 * 后序遍历
@@ -192,6 +221,9 @@ $tree->preOrder1($tree->root);
 echo "\n";
 echo "inOrder::";
 $tree->inOrder($tree->root);
+echo "\n";
+echo "inOrder1::";
+$tree->inOrder1($tree->root);
 echo "\n";
 echo "postOrder::";
 $tree->postOrder($tree->root);

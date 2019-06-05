@@ -133,7 +133,7 @@ class BinaryTree
 	{
 		$lh=$rh=$max=0;
 		if (is_null($node)) {
-			return $max;
+			return 0;
 		}
 		$lh = $this->postTreeHigh($node->lChild);
 		$rh = $this->postTreeHigh($node->rChild);

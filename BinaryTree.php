@@ -110,6 +110,21 @@ class BinaryTree
 			}
 		}
 	}
+
+	/**
+	 * 只打印叶子结点
+	 */
+	public function printLeafNode($node)
+	{
+		if (is_null($node)) {
+			return;
+		}
+		if ($node->lChild == NULL && $node->rChild == NULL) {
+			echo $node->data."**";
+		}
+		$this->printLeafNode($node->lChild);
+		$this->printLeafNode($node->rChild);
+	}
 }
 
 $tree = new BinaryTree();
@@ -131,4 +146,7 @@ $tree->postOrder($tree->root);
 echo "\n";
 echo "breadth::";
 $tree->breadth($tree->root);
+echo "\n";
+echo "print leaf node::";
+$tree->printLeafNode($tree->root);
 echo "\n";

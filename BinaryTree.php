@@ -137,8 +137,23 @@ class BinaryTree
 		}
 		$lh = $this->postTreeHigh($node->lChild);
 		$rh = $this->postTreeHigh($node->rChild);
-		$max = max($lh,$rh);
-		return $max+1;
+		$max = max($lh,$rh)+1;
+		return $max;
+	}
+
+	/**
+	 * 节点个数
+	 */
+	public function treeNodes($node)
+	{
+		$lc=$rc=$count=0;
+		if (is_null($node)) {
+			return 0;
+		}
+		$lc = $this->treeNodes($node->lChild);
+		$rc = $this->treeNodes($node->rChild);
+		$count = $lc+$rc+1;
+		return $count;
 	}
 }
 
@@ -166,4 +181,6 @@ echo "print leaf node::";
 $tree->preLeafNode($tree->root);
 echo "\n";
 echo "print tree high::".$tree->postTreeHigh($tree->root);
+echo "\n";
+echo "print tree count::".$tree->treeNodes($tree->root);
 echo "\n";

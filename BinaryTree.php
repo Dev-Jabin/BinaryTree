@@ -114,7 +114,7 @@ class BinaryTree
 	/**
 	 * 只打印叶子结点
 	 */
-	public function printLeafNode($node)
+	public function preLeafNode($node)
 	{
 		if (is_null($node)) {
 			return;
@@ -122,8 +122,23 @@ class BinaryTree
 		if ($node->lChild == NULL && $node->rChild == NULL) {
 			echo $node->data."**";
 		}
-		$this->printLeafNode($node->lChild);
-		$this->printLeafNode($node->rChild);
+		$this->preLeafNode($node->lChild);
+		$this->preLeafNode($node->rChild);
+	}
+
+	/**
+	 * 后序求树的高度
+	 */
+	public function postTreeHigh($node)
+	{
+		$lh=$rh=$max=0;
+		if (is_null($node)) {
+			return $max;
+		}
+		$lh = $this->postTreeHigh($node->lChild);
+		$rh = $this->postTreeHigh($node->rChild);
+		$max = max($lh,$rh);
+		return $max+1;
 	}
 }
 
@@ -148,5 +163,7 @@ echo "breadth::";
 $tree->breadth($tree->root);
 echo "\n";
 echo "print leaf node::";
-$tree->printLeafNode($tree->root);
+$tree->preLeafNode($tree->root);
+echo "\n";
+echo "print tree high::".$tree->postTreeHigh($tree->root);
 echo "\n";

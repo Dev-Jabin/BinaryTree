@@ -62,6 +62,25 @@ class BinaryTree
 	}
 
 	/**
+	 * 先序遍历，非递归方式
+	 */
+	public function preOrder1($node)
+	{
+		$stack = array();
+		array_push($stack, $node);
+		while (!empty($stack)) {
+			$node = array_pop($stack);
+			echo $node->data."**";
+			if ($node->rChild != null) {
+				array_push($stack, $node->rChild);
+			}
+			if ($node->lChild != null) {
+				array_push($stack, $node->lChild);
+			}
+		}
+	}
+
+	/**
 	 * 中序遍历
 	 * 左子树->根节点->右子树（LDR）
 	 */
@@ -74,6 +93,7 @@ class BinaryTree
 		echo $node->data."**";
 		$this->inOrder($node->rChild);
 	}
+
 
 	/**
 	 * 后序遍历
@@ -162,11 +182,13 @@ $tree->add(0);
 $tree->add(1);
 $tree->add(2);
 $tree->add(3);
-$tree->add(null);
 $tree->add(4);
 $tree->add(5);
 echo "preOrder::";
 $tree->preOrder($tree->root);
+echo "\n";
+echo "preOrder1::";
+$tree->preOrder1($tree->root);
 echo "\n";
 echo "inOrder::";
 $tree->inOrder($tree->root);

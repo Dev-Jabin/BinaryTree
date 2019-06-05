@@ -139,6 +139,45 @@ class BinaryTree
 	}
 
 	/**
+	 * 后序遍历，非递归方式
+	 */
+	public function postOrder1($node)
+	{
+		// $node:当前访问节点
+		// lastVisitNode:上次访问节点
+		$lastVistNode=null;
+		if (is_null($node)) {
+			return;
+		}
+		$stack = array();
+		//先把node移动到左子树最下边
+		while (!is_null($node)) {
+			array_push($stack, $node);
+			$node = $node->lChild;
+		}
+		//已经走到左子树最底端
+		while (!empty($stack)) {
+			$node = array_pop($stack);
+			//一个根节点被访问有两种情况
+			// 1. 无右子树
+			// 2. 右子树已经被访问
+			if ($node->rChild == null || $node->rChild == $lastVistNode) {
+				echo $node->data."**";
+				// 访问过一个节点后更新lastVisitNode
+				$lastVistNode = $node;
+			}else{//此时左子树刚被访问过，下一步需要进入右子树，此时根节点需要再次入栈。因为上一次弹出后，但是因为没有满足条件而根节点没有被访问。
+				array_push($stack, $node);
+				// 进入右子树，可以确定右子树此时一定不为空
+				$node = $node->rChild;
+				while ($node) {
+					array_push($stack, $node);
+					$node = $node->lChild;
+				}
+			}
+		}
+	}
+
+	/**
 	 * 层次遍历
 	 * 从根开始，从上到下，从左到右遍历整个树的节点
 	 */
@@ -227,6 +266,9 @@ $tree->inOrder1($tree->root);
 echo "\n";
 echo "postOrder::";
 $tree->postOrder($tree->root);
+echo "\n";
+echo "postOrder1::";
+$tree->postOrder1($tree->root);
 echo "\n";
 echo "breadth::";
 $tree->breadth($tree->root);
